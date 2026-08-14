@@ -1,6 +1,8 @@
 # menlu
 
 > 📖 **在线文档（点击查看）：https://menshuhao.github.io/npm_menlu/**
+>
+> 💡 也可以在 [GitHub 仓库](https://github.com/menshuhao/npm_menlu) 首页点击 `Settings → Pages` 查看在线文档
 
 menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
