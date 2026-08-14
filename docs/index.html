@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>menlu - 门术豪的个人工具库文档</title>
+  <meta name="description" content="menlu npm 工具库在线文档：13 个零依赖实用方法（日期格式化 / 彩色日志 / UUID / Base64 / 剪贴板 / Cookie）" />
+  <style>
+    :root {
+      --accent: #2563eb;
+      --accent-2: #0ea5e9;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --text-2: #475569;
+      --text-3: #94a3b8;
+      --code-bg: #0f172a;
+      --code-text: #e2e8f0;
+      --radius: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+        "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* 顶部导航 */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav {
+      max-width: 1200px; margin: 0 auto; padding: 14px 24px;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .logo {
+      font-size: 20px; font-weight: 700; color: var(--text);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .logo-mark {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff; display: flex; align-items: center; justify-content: center;
+      font-size: 16px; font-weight: 700;
+    }
+    .nav-links { margin-left: auto; display: flex; gap: 20px; align-items: center; }
+    .nav-links a { color: var(--text-2); font-size: 14px; }
+    .badge {
+      background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0;
+      font-size: 12px; padding: 2px 10px; border-radius: 999px; font-weight: 500;
+    }
+
+    /* Hero */
+    .hero {
+      background: linear-gradient(135deg, #eff6ff 0%, #ecfeff 50%, #f0fdf4 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 64px 24px 56px; text-align: center;
+    }
+    .hero h1 { font-size: 42px; font-weight: 800; letter-spacing: -0.5px; }
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .hero p { color: var(--text-2); max-width: 560px; margin: 16px auto 28px; font-size: 16px; }
+    .hero .install {
+      display: inline-block; background: var(--code-bg); color: #7dd3fc;
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 14px; padding: 12px 24px; border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.15);
+    }
+    .hero .install .dollar { color: #64748b; }
+
+    .container {
+      max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px;
+      display: grid; grid-template-columns: 220px 1fr; gap: 40px;
+    }
+
+    /* 侧边导航 */
+    aside { position: sticky; top: 80px; align-self: start; }
+    aside .side-title {
+      font-size: 12px; font-weight: 600; color: var(--text-3);
+      text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+    }
+    aside nav a {
+      display: block; padding: 6px 12px; border-radius: 8px;
+      color: var(--text-2); font-size: 14px; margin-bottom: 2px;
+    }
+    aside nav a:hover { background: #eef2ff; color: var(--accent); text-decoration: none; }
+
+    main { min-width: 0; }
+    section { margin-bottom: 48px; }
+
+    /* 区块标题 */
+    .section-title {
+      font-size: 26px; font-weight: 700; margin-bottom: 16px;
+      padding-bottom: 12px; border-bottom: 2px solid var(--border);
+    }
+    .section-title .tag {
+      font-size: 14px; font-weight: 600; color: var(--accent);
+      background: #eff6ff; padding: 2px 10px; border-radius: 6px;
+      vertical-align: middle; margin-right: 8px;
+    }
+
+    /* 方法卡片 */
+    .method { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin-bottom: 20px; }
+    .method h3 { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+    .method h3 code {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      font-size: 16px; color: var(--accent);
+    }
+    .method .desc { color: var(--text-2); font-size: 14px; margin-bottom: 16px; }
+    .method h4 { font-size: 13px; color: var(--text-3); font-weight: 600; margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* 参数表 */
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { text-align: left; padding: 8px 12px; border: 1px solid var(--border); }
+    th { background: #f1f5f9; font-weight: 600; }
+    td code, th code {
+      font-family: "SF Mono", Menlo, Consolas, monospace;
+      background: #f1f5f9; padding: 1px 6px; border-radius: 4px; font-size: 13px;
+    }
+
+    /* 代码块 */
+    pre {
+      background: var(--code-bg); color: var(--code-text);
+      border-radius: 10px; padding: 16px 20px; overflow-x: auto;
+      font-family: "SF Mono", Menlo, Consolas, monospace; font-size: 13px; line-height: 1.6;
+    }
+    pre code { background: none; padding: 0; }
+    pre .c { color: #64748b; }      /* 注释 */
+    pre .k { color: #c084fc; }      /* 关键字 */
+    pre .s { color: #86efac; }      /* 字符串 */
+    pre .f { color: #60a5fa; }      /* 函数 */
+    pre .n { color: #fbbf24; }      /* 数字 */
+
+    .note {
+      background: #fffbeb; border: 1px solid #fde68a; color: #92400e;
+      border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-top: 12px;
+    }
+    .ok {
+      background: #ecfdf5; border: 1px solid #a7f3d0; color: #065f46;
+      border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-top: 12px;
+    }
+
+    footer {
+      border-top: 1px solid var(--border); padding: 24px; text-align: center;
+      color: var(--text-3); font-size: 13px;
+    }
+    footer a { color: var(--text-2); }
+
+    @media (max-width: 900px) {
+      .container { grid-template-columns: 1fr; padding-top: 16px; }
+      aside { position: static; }
+      .hero h1 { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="logo">
+      <span class="logo-mark">M</span>
+      menlu
+      <span class="badge">v0.0.x</span>
+    </div>
+    <div class="nav-links">
+      <a href="#install">安装</a>
+      <a href="#usage">使用</a>
+      <a href="#methods">方法文档</a>
+      <a href="https://github.com/menshuhao/npm_menlu" target="_blank">GitHub</a>
+      <a href="https://www.npmjs.com/package/menlu" target="_blank">npm</a>
+    </div>
+  </div>
+</header>
+
+<div class="hero">
+  <h1><span>menlu</span> · 开箱即用的个人工具库</h1>
+  <p>零依赖、纯手写，13 个实用方法。支持 JS / TS / Node / 浏览器 / 小程序，一行引入，随处可用。</p>
+  <div class="install"><span class="dollar">$</span> npm install menlu</div>
+</div>
+
+<div class="container">
+  <aside>
+    <div class="side-title">方法导航</div>
+    <nav>
+      <a href="#formatDate">formatDate 日期</a>
+      <a href="#log">log 日志</a>
+      <a href="#list">list 列表</a>
+      <a href="#table">table 表格</a>
+      <a href="#divider">divider 分隔线</a>
+      <a href="#box">box 信息框</a>
+      <a href="#uuid">uuid 唯一ID</a>
+      <a href="#base64">toBase64 / fromBase64</a>
+      <a href="#copyText">copyText 复制</a>
+      <a href="#cookie">Cookie 工具</a>
+    </nav>
+  </aside>
+
+  <main>
+    <!-- 安装 -->
+    <section id="install">
+      <h2 class="section-title"><span class="tag">①</span>安装</h2>
+      <pre><code><span class="k">npm</span> install menlu</code></pre>
+    </section>
+
+    <!-- 使用 -->
+    <section id="usage">
+      <h2 class="section-title"><span class="tag">②</span>使用方式</h2>
+
+      <div class="method">
+        <h3><code>方式一：页面引入</code>（推荐）</h3>
+        <p class="desc">main.js 不用动，哪个页面要用就在哪里 import，<code>ML.xxx()</code> 直接调用。</p>
+        <pre><code><span class="k">import</span> ML <span class="k">from</span> <span class="s">"menlu"</span>;
+
+<span class="k">const</span> now = ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">Date</span>(), <span class="s">"YYYY-MM-DD"</span>);
+ML.<span class="f">log</span>(<span class="s">"页面加载"</span>, <span class="s">"success"</span>);
+<span class="k">const</span> id = ML.<span class="f">uuid</span>();</code></pre>
+      </div>
+
+      <div class="method">
+        <h3><code>方式二：全局挂载</code>（最省事）</h3>
+        <p class="desc">main.js / main.ts 加两行，之后所有页面直接 <code>ML.xxx()</code>，不用 import（TS 项目类型已内置，无需额外声明）。</p>
+        <pre><code><span class="k">import</span> ML <span class="k">from</span> <span class="s">"menlu"</span>;
+(globalThis <span class="k">as any</span>).ML = ML;  <span class="c">// TS 项目加 as any</span></code></pre>
+      </div>
+
+      <div class="method">
+        <h3><code>Node / CommonJS</code></h3>
+        <pre><code><span class="k">const</span> ML = <span class="f">require</span>(<span class="s">"menlu"</span>);
+ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">Date</span>());</code></pre>
+      </div>
+
+      <div class="method">
+        <h3><code>按需具名导入</code></h3>
+        <pre><code><span class="k">import</span> { formatDate, uuid } <span class="k">from</span> <span class="s">"menlu"</span>;</code></pre>
+      </div>
+    </section>
+
+    <!-- 方法文档 -->
+    <section id="methods">
+      <h2 class="section-title"><span class="tag">③</span>方法文档（共 13 个）</h2>
+
+      <!-- formatDate -->
+      <div class="method" id="formatDate">
+        <h3><code>ML.formatDate(date?, pattern?)</code> —— 日期格式化</h3>
+        <p class="desc">日期对象 / 时间戳 / 字符串，统统格式化。</p>
+        <h4>参数</h4>
+        <table>
+          <tr><th>参数</th><th>类型</th><th>默认</th><th>说明</th></tr>
+          <tr><td><code>date</code></td><td><code>Date | number | string</code></td><td><code>new Date()</code></td><td>日期对象 / 时间戳 / 可解析的字符串</td></tr>
+          <tr><td><code>pattern</code></td><td><code>string</code></td><td><code>'YYYY-MM-DD'</code></td><td>格式化模板</td></tr>
+        </table>
+        <h4>占位符</h4>
+        <table>
+          <tr><th>占位符</th><th>含义</th><th>示例</th></tr>
+          <tr><td><code>YYYY</code> / <code>YY</code></td><td>4 位 / 2 位年份</td><td>2026 / 26</td></tr>
+          <tr><td><code>MM</code> / <code>M</code></td><td>补零 / 不补零月份</td><td>08 / 8</td></tr>
+          <tr><td><code>DD</code> / <code>D</code></td><td>补零 / 不补零日期</td><td>05 / 5</td></tr>
+          <tr><td><code>HH</code> / <code>H</code></td><td>补零 / 不补零小时</td><td>09 / 9</td></tr>
+          <tr><td><code>mm</code> / <code>m</code></td><td>补零 / 不补零分钟</td><td>05 / 5</td></tr>
+          <tr><td><code>ss</code> / <code>s</code></td><td>补零 / 不补零秒</td><td>07 / 7</td></tr>
+        </table>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">formatDate</span>();                          <span class="c">// =&gt; "2026-08-14"</span>
+ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">Date</span>(<span class="n">2026</span>, <span class="n">7</span>, <span class="n">13</span>, <span class="n">14</span>, <span class="n">30</span>, <span class="n">5</span>), <span class="s">"YYYY/MM/DD HH:mm:ss"</span>);
+<span class="c">// =&gt; "2026/08/13 14:30:05"</span>
+ML.<span class="f">formatDate</span>(<span class="n">1783909805000</span>, <span class="s">"MM-DD"</span>);   <span class="c">// =&gt; "07-13"（时间戳）</span>
+ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">Date</span>(<span class="n">2026</span>, <span class="n">0</span>, <span class="n">5</span>), <span class="s">"YYYY/MM/DD 第D天"</span>);
+<span class="c">// =&gt; "2026/01/05 第5天"（普通字符原样输出）</span></code></pre>
+        <div class="note">⚠️ 传入无效日期会抛出 <code>TypeError</code>。</div>
+      </div>
+
+      <!-- log -->
+      <div class="method" id="log">
+        <h3><code>ML.log(message, type?)</code> —— 彩色日志输出</h3>
+        <p class="desc">图标 + 颜色。Node 终端 ANSI 彩色，浏览器控制台 %c 着色，无控制台环境自动降级纯文本。</p>
+        <h4>参数</h4>
+        <table>
+          <tr><th>参数</th><th>类型</th><th>默认</th><th>说明</th></tr>
+          <tr><td><code>message</code></td><td><code>string</code></td><td>-</td><td>要输出的内容</td></tr>
+          <tr><td><code>type</code></td><td><code>'info' | 'success' | 'warn' | 'error'</code></td><td><code>'info'</code></td><td>日志级别</td></tr>
+        </table>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">log</span>(<span class="s">"构建完成"</span>);          <span class="c">// ℹ 青色 info</span>
+ML.<span class="f">log</span>(<span class="s">"部署成功"</span>, <span class="s">"success"</span>); <span class="c">// ✔ 绿色 success</span>
+ML.<span class="f">log</span>(<span class="s">"接口响应慢"</span>, <span class="s">"warn"</span>);  <span class="c">// ⚠ 橙色 warn</span>
+ML.<span class="f">log</span>(<span class="s">"请求失败"</span>, <span class="s">"error"</span>);   <span class="c">// ✘ 红色 error</span></code></pre>
+      </div>
+
+      <!-- list -->
+      <div class="method" id="list">
+        <h3><code>ML.list(items)</code> —— 列表 / 对象输出</h3>
+        <p class="desc">数组输出圆点列表，对象输出对齐的 key: value。</p>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">list</span>([<span class="s">"苹果"</span>, <span class="s">"香蕉"</span>, <span class="s">"橘子"</span>]);
+<span class="c">// • 苹果</span>
+<span class="c">// • 香蕉</span>
+
+ML.<span class="f">list</span>({ name: <span class="s">"menlu"</span>, version: <span class="s">"0.0.1"</span> });
+<span class="c">// name   : menlu</span>
+<span class="c">// version: 0.0.1</span></code></pre>
+      </div>
+
+      <!-- table -->
+      <div class="method" id="table">
+        <h3><code>ML.table(data)</code> —— 表格输出</h3>
+        <p class="desc">边框表格，表头蓝色加粗，自动适配中文宽度。支持对象数组（键名作表头）或二维数组（首行作表头）。</p>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">table</span>([
+  { 名称: <span class="s">"草莓蛋糕"</span>, 价格: <span class="n">28</span>, 库存: <span class="n">10</span> },
+  { 名称: <span class="s">"香芋奶茶"</span>, 价格: <span class="n">18</span>, 库存: <span class="n">25</span> },
+]);
+<span class="c">// ┌────────────┬──────┬──────┐</span>
+<span class="c">// │ 名称       │ 价格 │ 库存 │</span>
+<span class="c">// ├────────────┼──────┼──────┤</span>
+<span class="c">// │ 草莓蛋糕   │ 28   │ 10   │</span>
+<span class="c">// └────────────┴──────┴──────┘</span></code></pre>
+      </div>
+
+      <!-- divider -->
+      <div class="method" id="divider">
+        <h3><code>ML.divider(length?, char?)</code> —— 分隔线</h3>
+        <p class="desc">输出灰色水平分隔线。</p>
+        <h4>参数</h4>
+        <table>
+          <tr><th>参数</th><th>类型</th><th>默认</th><th>说明</th></tr>
+          <tr><td><code>length</code></td><td><code>number</code></td><td><code>40</code></td><td>分隔线长度</td></tr>
+          <tr><td><code>char</code></td><td><code>string</code></td><td><code>'─'</code></td><td>分隔线字符</td></tr>
+        </table>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">divider</span>();          <span class="c">// ────────────────────────</span>
+ML.<span class="f">divider</span>(<span class="n">20</span>, <span class="s">"*"</span>);    <span class="c">// ********************</span></code></pre>
+      </div>
+
+      <!-- box -->
+      <div class="method" id="box">
+        <h3><code>ML.box(text, type?)</code> —— 信息框</h3>
+        <p class="desc">带边框的信息框，内容按 type 着色，支持多行。</p>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">box</span>(<span class="s">"打包完成，体积 28 KB"</span>, <span class="s">"success"</span>);
+<span class="c">// ┌──────────────────────────┐</span>
+<span class="c">// │ 打包完成，体积 28 KB      │</span>
+<span class="c">// └──────────────────────────┘</span>
+
+ML.<span class="f">box</span>(<span class="s">"第一行\n第二行"</span>, <span class="s">"warn"</span>);  <span class="c">// 多行</span></code></pre>
+      </div>
+
+      <!-- uuid -->
+      <div class="method" id="uuid">
+        <h3><code>ML.uuid()</code> —— 生成 UUID v4</h3>
+        <p class="desc">128 位随机，优先使用 crypto.randomUUID()（Node 19+ / 现代浏览器），旧环境自动降级。</p>
+        <h4>示例</h4>
+        <pre><code><span class="k">const</span> id = ML.<span class="f">uuid</span>();
+<span class="c">// =&gt; "550e8400-e29b-41d4-a716-446655440000"</span>
+
+<span class="c">// 常见用法：列表 key、订单号前缀</span>
+<span class="k">const</span> orderNo = <span class="s">"order_"</span> + ML.<span class="f">uuid</span>();</code></pre>
+      </div>
+
+      <!-- base64 -->
+      <div class="method" id="base64">
+        <h3><code>ML.toBase64(text)</code> / <code>ML.fromBase64(base64)</code> —— Base64 编解码</h3>
+        <p class="desc">Unicode 安全，中文 / emoji / 特殊符号均可（原生 btoa 对中文会报错，本方法已处理）。</p>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">toBase64</span>(<span class="s">"你好"</span>);        <span class="c">// =&gt; "5L2g5aW9"</span>
+ML.<span class="f">fromBase64</span>(<span class="s">"5L2g5aW9"</span>);  <span class="c">// =&gt; "你好"</span>
+
+ML.<span class="f">toBase64</span>(<span class="s">"Hello 👋"</span>);
+ML.<span class="f">fromBase64</span>(ML.<span class="f">toBase64</span>(<span class="s">"Hello 👋"</span>));  <span class="c">// 往返一致</span></code></pre>
+      </div>
+
+      <!-- copyText -->
+      <div class="method" id="copyText">
+        <h3><code>ML.copyText(text)</code> —— 复制到剪贴板</h3>
+        <p class="desc">多端自动适配：微信小程序 → uni-app → 浏览器 navigator.clipboard → 旧浏览器降级。</p>
+        <h4>返回值</h4>
+        <p class="desc"><code>Promise&lt;boolean&gt;</code> —— 成功返回 <code>true</code>，失败返回 <code>false</code>（纯 Node 环境返回 false，不报错）</p>
+        <h4>示例</h4>
+        <pre><code><span class="k">async function</span> onCopy() {
+  <span class="k">const</span> ok = <span class="k">await</span> ML.<span class="f">copyText</span>(<span class="s">"https://github.com/menshuhao/npm_menlu"</span>);
+  <span class="k">if</span> (ok) {
+    alert(<span class="s">"复制成功"</span>);
+  } <span class="k">else</span> {
+    alert(<span class="s">"复制失败，请长按手动复制"</span>);
+  }
+}</code></pre>
+      </div>
+
+      <!-- cookie -->
+      <div class="method" id="cookie">
+        <h3><code>ML.setCookie / ML.getCookie / ML.removeCookie</code> —— Cookie 工具</h3>
+        <p class="desc">登录态、主题偏好，一套搞定。自动 URL 编码（支持中文），多端适配（浏览器 / uni-app / 小程序）。</p>
+
+        <h4>ML.setCookie(name, value, ttl?, options?) —— ttl 4 种写法</h4>
+        <pre><code><span class="c">// ① 数字 + unit 单位（unit 默认 's' 秒）</span>
+ML.<span class="f">setCookie</span>(<span class="s">"token"</span>, <span class="s">"abc"</span>, <span class="n">7200</span>, { unit: <span class="s">"s"</span> }); <span class="c">// 7200 秒 = 2 小时</span>
+ML.<span class="f">setCookie</span>(<span class="s">"flag"</span>, <span class="s">"1"</span>, <span class="n">7</span>, { unit: <span class="s">"d"</span> });       <span class="c">// 7 天</span>
+
+<span class="c">// ② 字符串直接带单位：ms / s / m / h / d / w / y</span>
+ML.<span class="f">setCookie</span>(<span class="s">"theme"</span>, <span class="s">"dark"</span>, <span class="s">"30d"</span>);    <span class="c">// 30 天</span>
+ML.<span class="f">setCookie</span>(<span class="s">"session"</span>, <span class="s">"x"</span>, <span class="s">"2h"</span>);     <span class="c">// 2 小时</span>
+
+<span class="c">// ③ Date 对象：精确到期时间</span>
+ML.<span class="f">setCookie</span>(<span class="s">"vip"</span>, <span class="s">"1"</span>, <span class="k">new</span> <span class="f">Date</span>(<span class="s">"2027-01-01"</span>));
+
+<span class="c">// ④ 不传 ttl：会话级 Cookie（关闭浏览器失效）</span>
+ML.<span class="f">setCookie</span>(<span class="s">"last_visit"</span>, <span class="s">"2026-08-14"</span>);</code></pre>
+
+        <h4>options 配置项</h4>
+        <pre><code>ML.<span class="f">setCookie</span>(<span class="s">"token"</span>, <span class="s">"abc123"</span>, <span class="n">7</span>, {
+  unit: <span class="s">"d"</span>,          <span class="c">// 单位（默认 's'）</span>
+  path: <span class="s">"/"</span>,          <span class="c">// 路径（默认 '/'，全站可用）</span>
+  domain: <span class="s">"example.com"</span>, <span class="c">// 域名</span>
+  secure: <span class="k">true</span>,      <span class="c">// 仅 https 传输</span>
+  sameSite: <span class="s">"Lax"</span>,  <span class="c">// 'Strict' | 'Lax' | 'None'</span>
+});</code></pre>
+
+        <h4>ML.getCookie(name)</h4>
+        <pre><code>ML.<span class="f">getCookie</span>(<span class="s">"token"</span>);          <span class="c">// =&gt; "abc123"</span>
+ML.<span class="f">getCookie</span>(<span class="s">"不存在的名字"</span>);    <span class="c">// =&gt; null</span></code></pre>
+
+        <h4>ML.removeCookie(name, options?)</h4>
+        <pre><code>ML.<span class="f">removeCookie</span>(<span class="s">"token"</span>);                          <span class="c">// 默认删除 path='/' 的</span>
+ML.<span class="f">removeCookie</span>(<span class="s">"admin_token"</span>, { path: <span class="s">"/admin"</span> }); <span class="c">// 指定 path 删除</span></code></pre>
+
+        <h4>完整场景：登录 → 刷新恢复 → 登出</h4>
+        <pre><code><span class="c">// ① 登录成功，存 token</span>
+ML.<span class="f">setCookie</span>(<span class="s">"token"</span>, res.token, res.expires_in, { unit: <span class="s">"s"</span> });
+
+<span class="c">// ② 刷新页面后恢复登录态</span>
+<span class="k">const</span> token = ML.<span class="f">getCookie</span>(<span class="s">"token"</span>);
+<span class="k">if</span> (token) { <span class="c">// 已登录...</span> }
+
+<span class="c">// ③ 请求拦截器自动携带</span>
+config.headers.Authorization = <span class="s">"Bearer "</span> + ML.<span class="f">getCookie</span>(<span class="s">"token"</span>);
+
+<span class="c">// ④ 登出</span>
+ML.<span class="f">removeCookie</span>(<span class="s">"token"</span>);</code></pre>
+
+        <div class="note">⚠️ 删除 Cookie 时 path / domain 需与写入时一致，否则删不掉。敏感 token 建议后端设置 HttpOnly Cookie 防 XSS。</div>
+      </div>
+
+      <div class="ok">✅ 以上就是全部 13 个方法。有任何问题欢迎到 <a href="https://github.com/menshuhao/npm_menlu" target="_blank">GitHub</a> 提 Issue。</div>
+    </section>
+  </main>
+</div>
+
+<footer>
+  menlu · MIT License · <a href="https://github.com/menshuhao/npm_menlu" target="_blank">menshuhao/npm_menlu</a> · <a href="https://www.npmjs.com/package/menlu" target="_blank">npmjs.com/package/menlu</a>
+</footer>
+
+</body>
+</html>

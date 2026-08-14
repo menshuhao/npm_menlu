@@ -1,5 +1,7 @@
 # menlu
 
+> 📖 **在线文档（点击查看）：https://menshuhao.github.io/npm_menlu/**
+
 menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
 当前共 **13 个实用方法**，全部纯手写实现。
@@ -242,24 +244,24 @@ import ML, { formatDate } from "menlu";
 **使用示例：**
 
 ```js
-import { formatDate } from "menlu";
+import ML from "menlu";
 
-formatDate();
+ML.formatDate();
 // => "2026-08-14"
 
-formatDate(new Date(2026, 7, 13, 14, 30, 5), "YYYY/MM/DD HH:mm:ss");
+ML.formatDate(new Date(2026, 7, 13, 14, 30, 5), "YYYY/MM/DD HH:mm:ss");
 // => "2026/08/13 14:30:05"
 
-formatDate(new Date(2026, 7, 13, 14, 0), "YYYY年M月D日 HH:mm");
+ML.formatDate(new Date(2026, 7, 13, 14, 0), "YYYY年M月D日 HH:mm");
 // => "2026年8月13日 14:00"
 
-formatDate("2026-08-13T09:00:00Z", "YY-MM-DD");
+ML.formatDate("2026-08-13T09:00:00Z", "YY-MM-DD");
 // => "26-08-13"
 
-formatDate(1783909805000, "MM-DD");
+ML.formatDate(1783909805000, "MM-DD");
 // => "07-13"（时间戳）
 
-formatDate(new Date(2026, 0, 5), "YYYY/MM/DD 第D天");
+ML.formatDate(new Date(2026, 0, 5), "YYYY/MM/DD 第D天");
 // => "2026/01/05 第5天"（普通字符原样输出）
 ```
 
@@ -279,12 +281,12 @@ formatDate(new Date(2026, 0, 5), "YYYY/MM/DD 第D天");
 **使用示例：**
 
 ```js
-import { log } from "menlu";
+import ML from "menlu";
 
-log("构建完成"); // ℹ 青色 info
-log("部署成功", "success"); // ✔ 绿色 success
-log("接口响应慢", "warn"); // ⚠ 橙色 warn
-log("请求失败", "error"); // ✘ 红色 error
+ML.log("构建完成"); // ℹ 青色 info
+ML.log("部署成功", "success"); // ✔ 绿色 success
+ML.log("接口响应慢", "warn"); // ⚠ 橙色 warn
+ML.log("请求失败", "error"); // ✘ 红色 error
 ```
 
 **注意：** Node 终端（TTY）下使用 ANSI 彩色；浏览器控制台使用 `%c` 样式着色（DevTools 中显示彩色）；设置 `NO_COLOR` 或小程序等无控制台环境下降级为纯文本。
@@ -298,16 +300,16 @@ log("请求失败", "error"); // ✘ 红色 error
 **使用示例：**
 
 ```js
-import { list } from "menlu";
+import ML from "menlu";
 
 // 数组 → 圆点列表
-list(["苹果", "香蕉", "橘子"]);
+ML.list(["苹果", "香蕉", "橘子"]);
 // • 苹果
 // • 香蕉
 // • 橘子
 
 // 对象 → 对齐的 key: value
-list({ name: "menlu", version: "0.0.1", desc: "个人工具库" });
+ML.list({ name: "menlu", version: "0.0.1", desc: "个人工具库" });
 // name   : menlu
 // version: 0.0.1
 // desc   : 个人工具库
@@ -322,10 +324,10 @@ list({ name: "menlu", version: "0.0.1", desc: "个人工具库" });
 **使用示例：**
 
 ```js
-import { table } from "menlu";
+import ML from "menlu";
 
 // 对象数组（推荐）
-table([
+ML.table([
   { 名称: "草莓蛋糕", 价格: 28, 库存: 10 },
   { 名称: "香芋奶茶", 价格: 18, 库存: 25 },
 ]);
@@ -337,7 +339,7 @@ table([
 // └────────────┴──────┴──────┘
 
 // 二维数组
-table([
+ML.table([
   ["名称", "价格"],
   ["草莓蛋糕", 28],
 ]);
@@ -354,17 +356,17 @@ table([
 | 参数     | 类型     | 默认值 | 说明       |
 | -------- | -------- | ------ | ---------- |
 | `length` | `number` | `40`   | 分隔线长度 |
-| `char`   | `string` | `'-'`  | 分隔线字符 |
+| `char`   | `string` | `'─'`  | 分隔线字符 |
 
 **使用示例：**
 
 ```js
-import { divider } from "menlu";
+import ML from "menlu";
 
-divider();
-// ----------------------------------------
+ML.divider();
+// ────────────────────────────────────────
 
-divider(20, "*");
+ML.divider(20, "*");
 // ********************
 ```
 
@@ -382,17 +384,17 @@ divider(20, "*");
 **使用示例：**
 
 ```js
-import { box } from "menlu";
+import ML from "menlu";
 
-box("打包完成，体积 28 KB", "success");
+ML.box("打包完成，体积 28 KB", "success");
 // ┌──────────────────────────┐
-// │ ✔ 打包完成，体积 28 KB    │
+// │ 打包完成，体积 28 KB      │
 // └──────────────────────────┘
 
-box("第一行\n第二行", "warn");
+ML.box("第一行\n第二行", "warn");
 // ┌────────────┐
-// │ ⚠ 第一行   │
-// │   第二行   │
+// │ 第一行     │
+// │ 第二行     │
 // └────────────┘
 ```
 
@@ -407,13 +409,13 @@ box("第一行\n第二行", "warn");
 **使用示例：**
 
 ```js
-import { uuid } from "menlu";
+import ML from "menlu";
 
-uuid();
+ML.uuid();
 // => "550e8400-e29b-41d4-a716-446655440000"
 
 // 常见用法：列表 key、订单号前缀
-const id = "order_" + uuid();
+const id = "order_" + ML.uuid();
 ```
 
 **实现说明：** 优先使用 `crypto.randomUUID()`（Node 19+ / 现代浏览器），否则用 16 字节加密随机数生成，安全性可靠。
@@ -429,21 +431,21 @@ const id = "order_" + uuid();
 **使用示例：**
 
 ```js
-import { toBase64, fromBase64 } from "menlu";
+import ML from "menlu";
 
 // 中文、表情符号都安全（原生 btoa 对中文会报错，本方法已处理）
-toBase64("你好");
+ML.toBase64("你好");
 // => "5L2g5aW9"
 
-fromBase64("5L2g5aW9");
+ML.fromBase64("5L2g5aW9");
 // => "你好"
 
-toBase64("Hello 👋");
-fromBase64(toBase64("Hello 👋"));
+ML.toBase64("Hello 👋");
+ML.fromBase64(ML.toBase64("Hello 👋"));
 // => "Hello 👋"（往返一致）
 
 // 常见用法：图片 base64、接口参数编码
-const imgBase64 = "data:image/png;base64," + toBase64(rawData);
+const imgBase64 = "data:image/png;base64," + ML.toBase64(rawData);
 ```
 
 ---
@@ -464,11 +466,11 @@ const imgBase64 = "data:image/png;base64," + toBase64(rawData);
 **使用示例：**
 
 ```js
-import { copyText } from "menlu";
+import ML from "menlu";
 
 // 按钮点击复制
 async function onCopy() {
-  const ok = await copyText("https://github.com/menshuhao/npm_menlu");
+  const ok = await ML.copyText("https://github.com/menshuhao/npm_menlu");
   if (ok) {
     alert("复制成功");
   } else {
@@ -476,8 +478,8 @@ async function onCopy() {
   }
 }
 
-// Vue 模板按钮
-// <button @click="copyText('邀请码 ML-8888')">复制邀请码</button>
+// Vue 模板按钮（配合全局挂载 $menlu 后，见上方「使用方式」）
+// <button @click="$menlu.copyText('邀请码 ML-8888')">复制邀请码</button>
 ```
 
 **注意：** 在纯 Node 环境（无浏览器、无小程序 API）中返回 `false`，不会报错。
@@ -500,27 +502,29 @@ async function onCopy() {
 **ttl 有效期支持 4 种写法：**
 
 ```js
+import ML from "menlu";
+
 // ① 数字 + unit 单位（unit 默认 's' 秒）
-setCookie("token", "abc", 7200, { unit: "s" }); // 7200 秒 = 2 小时
-setCookie("code", "123", 30, { unit: "m" }); // 30 分钟
-setCookie("flag", "1", 7, { unit: "d" }); // 7 天
+ML.setCookie("token", "abc", 7200, { unit: "s" }); // 7200 秒 = 2 小时
+ML.setCookie("code", "123", 30, { unit: "m" }); // 30 分钟
+ML.setCookie("flag", "1", 7, { unit: "d" }); // 7 天
 
 // ② 字符串直接带单位：ms / s / m / h / d / w / y（毫秒/秒/分/时/天/周/年）
-setCookie("theme", "dark", "30d"); // 30 天
-setCookie("session", "x", "2h"); // 2 小时
-setCookie("fast", "y", "500ms"); // 500 毫秒
+ML.setCookie("theme", "dark", "30d"); // 30 天
+ML.setCookie("session", "x", "2h"); // 2 小时
+ML.setCookie("fast", "y", "500ms"); // 500 毫秒
 
 // ③ Date 对象：精确到期时间
-setCookie("vip", "1", new Date("2027-01-01"));
+ML.setCookie("vip", "1", new Date("2027-01-01"));
 
 // ④ 不传 ttl：会话级 Cookie（关闭浏览器失效）
-setCookie("last_visit", "2026-08-14");
+ML.setCookie("last_visit", "2026-08-14");
 ```
 
 **options 配置项：**
 
 ```js
-setCookie("token", "abc123", 7, {
+ML.setCookie("token", "abc123", 7, {
   unit: "d", // 单位（默认 's'）
   path: "/", // 路径（默认 '/'，全站可用）
   domain: "example.com", // 域名
@@ -534,8 +538,8 @@ setCookie("token", "abc123", 7, {
 **返回值：** `string | null`（不存在时返回 `null`）
 
 ```js
-getCookie("token"); // => "abc123"
-getCookie("不存在的名字"); // => null
+ML.getCookie("token"); // => "abc123"
+ML.getCookie("不存在的名字"); // => null
 ```
 
 #### removeCookie —— 删除 Cookie
@@ -543,27 +547,27 @@ getCookie("不存在的名字"); // => null
 **注意：** 删除时要和写入时使用**相同的 path / domain**，否则删不掉。
 
 ```js
-removeCookie("token"); // 默认删除 path='/' 的
-removeCookie("admin_token", { path: "/admin" }); // 指定 path 删除
+ML.removeCookie("token"); // 默认删除 path='/' 的
+ML.removeCookie("admin_token", { path: "/admin" }); // 指定 path 删除
 ```
 
 #### 完整场景：登录 → 刷新恢复 → 登出
 
 ```js
 // ① 登录成功，存 token（后台返回 expires_in 单位是秒，直接透传）
-setCookie("token", res.token, res.expires_in, { unit: "s" });
+ML.setCookie("token", res.token, res.expires_in, { unit: "s" });
 
 // ② 刷新页面后恢复登录态
-const token = getCookie("token");
+const token = ML.getCookie("token");
 if (token) {
   // 已登录...
 }
 
 // ③ 请求拦截器自动携带
-config.headers.Authorization = "Bearer " + getCookie("token");
+config.headers.Authorization = "Bearer " + ML.getCookie("token");
 
 // ④ 登出
-removeCookie("token");
+ML.removeCookie("token");
 ```
 
 **环境说明：** 非浏览器环境（Node / 小程序）下：`setCookie` / `removeCookie` 返回 `false`，`getCookie` 返回 `null`，不会报错。
