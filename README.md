@@ -33,7 +33,7 @@ import ML from "menlu";
 
 const now = ML.formatDate(new Date(), "YYYY-MM-DD");
 const id = ML.uuid();
-ML.log("页面加载", "success");
+ML.log.success("页面加载");
 </script>
 ```
 
@@ -49,7 +49,7 @@ globalThis.ML = ML; // JS 项目直接挂
 <!-- 任意页面：什么都不用写，直接用 -->
 <script setup>
 const now = ML.formatDate(new Date(), "YYYY-MM-DD");
-ML.log("页面加载", "success");
+ML.log.success("页面加载");
 </script>
 ```
 
@@ -176,7 +176,7 @@ import ML from "menlu";
 const ML = require("menlu");
 
 ML.formatDate(new Date());
-ML.log("构建完成", "success");
+ML.log.success("构建完成");
 ```
 
 ### 四、按需具名导入（打包体积最优化）
@@ -283,11 +283,14 @@ ML.formatDate(new Date(2026, 0, 5), "YYYY/MM/DD 第D天");
 ```js
 import ML from "menlu";
 
-ML.log("构建完成"); // ℹ 青色 info
-ML.log("部署成功", "success"); // ✔ 绿色 success
-ML.log("接口响应慢", "warn"); // ⚠ 橙色 warn
-ML.log("请求失败", "error"); // ✘ 红色 error
+// 链式调用（推荐）：一眼看出日志级别
+ML.log.info("构建完成"); // ℹ 青色 info
+ML.log.success("部署成功"); // ✔ 绿色 success
+ML.log.warn("接口响应慢"); // ⚠ 橙色 warn
+ML.log.error("请求失败"); // ✘ 红色 error
 ```
+
+> 也可以传第二个参数指定级别（旧写法，兼容）：`ML.log("部署成功", "success")`
 
 **注意：** Node 终端（TTY）下使用 ANSI 彩色；浏览器控制台使用 `%c` 样式着色（DevTools 中显示彩色）；设置 `NO_COLOR` 或小程序等无控制台环境下降级为纯文本。
 

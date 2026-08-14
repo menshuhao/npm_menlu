@@ -52,4 +52,10 @@ function log(message, type = "info") {
   return message;
 }
 
+// 链式调用：ML.log.success("xxx") 等价于 ML.log("xxx", "success")
+log.info = (message) => log(message, "info");
+log.success = (message) => log(message, "success");
+log.warn = (message) => log(message, "warn");
+log.error = (message) => log(message, "error");
+
 module.exports = { log };

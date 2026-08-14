@@ -48,14 +48,32 @@ export function formatDate(
  * - 浏览器控制台：%c 样式着色（DevTools 可见）
  * - 无控制台环境或设置 NO_COLOR=1：纯文本降级，不报错
  *
+ * 支持两种调用方式：
+ * - 直接调用：log("部署成功", "success")
+ * - 链式调用：log.success("部署成功")（推荐，更直观）
+ *
  * @param message 要输出的内容（自动转字符串）
  * @param type 日志级别：'info' | 'success' | 'warn' | 'error'（默认 'info'）
  * @returns 原始 message（可继续使用）
  * @example
- * log("部署成功", "success"); // ✔ 绿色
- * log("请求失败", "error");   // ✘ 红色
+ * log("构建完成");            // ℹ 青色 info
+ * log.success("部署成功");    // ✔ 绿色 success
+ * log.warn("接口响应慢");     // ⚠ 橙色 warn
+ * log.error("请求失败");      // ✘ 红色 error
  */
-export function log(message: string, type?: LogType): void;
+export interface Log {
+  (message: string, type?: LogType): void;
+  /** ℹ 青色普通信息 */
+  info(message: string): void;
+  /** ✔ 绿色成功 */
+  success(message: string): void;
+  /** ⚠ 橙色警告 */
+  warn(message: string): void;
+  /** ✘ 红色错误 */
+  error(message: string): void;
+}
+
+export const log: Log;
 
 /**
  * 以列表形式输出数组或对象（自动对齐）。

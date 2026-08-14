@@ -306,19 +306,21 @@ ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">
 
       <!-- log -->
       <div class="method" id="log">
-        <h3><code>ML.log(message, type?)</code> —— 彩色日志输出</h3>
+        <h3><code>ML.log</code> —— 彩色日志输出</h3>
         <p class="desc">图标 + 颜色。Node 终端 ANSI 彩色，浏览器控制台 %c 着色，无控制台环境自动降级纯文本。</p>
+        <h4>链式调用（推荐）</h4>
+        <pre><code>ML.<span class="f">log</span>.<span class="f">info</span>(<span class="s">"构建完成"</span>);    <span class="c">// ℹ 青色 info</span>
+ML.<span class="f">log</span>.<span class="f">success</span>(<span class="s">"部署成功"</span>);  <span class="c">// ✔ 绿色 success</span>
+ML.<span class="f">log</span>.<span class="f">warn</span>(<span class="s">"接口响应慢"</span>);   <span class="c">// ⚠ 橙色 warn</span>
+ML.<span class="f">log</span>.<span class="f">error</span>(<span class="s">"请求失败"</span>);    <span class="c">// ✘ 红色 error</span></code></pre>
+        <h4>旧写法（兼容）</h4>
+        <pre><code>ML.<span class="f">log</span>(<span class="s">"部署成功"</span>, <span class="s">"success"</span>);  <span class="c">// 第二参数指定级别，效果相同</span></code></pre>
         <h4>参数</h4>
         <table>
           <tr><th>参数</th><th>类型</th><th>默认</th><th>说明</th></tr>
           <tr><td><code>message</code></td><td><code>string</code></td><td>-</td><td>要输出的内容</td></tr>
-          <tr><td><code>type</code></td><td><code>'info' | 'success' | 'warn' | 'error'</code></td><td><code>'info'</code></td><td>日志级别</td></tr>
+          <tr><td><code>type</code></td><td><code>'info' | 'success' | 'warn' | 'error'</code></td><td><code>'info'</code></td><td>日志级别（旧写法用）</td></tr>
         </table>
-        <h4>示例</h4>
-        <pre><code>ML.<span class="f">log</span>(<span class="s">"构建完成"</span>);          <span class="c">// ℹ 青色 info</span>
-ML.<span class="f">log</span>(<span class="s">"部署成功"</span>, <span class="s">"success"</span>); <span class="c">// ✔ 绿色 success</span>
-ML.<span class="f">log</span>(<span class="s">"接口响应慢"</span>, <span class="s">"warn"</span>);  <span class="c">// ⚠ 橙色 warn</span>
-ML.<span class="f">log</span>(<span class="s">"请求失败"</span>, <span class="s">"error"</span>);   <span class="c">// ✘ 红色 error</span></code></pre>
       </div>
 
       <!-- list -->
