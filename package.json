@@ -1,0 +1,41 @@
+{
+  "name": "menlu",
+  "version": "0.0.1",
+  "description": "MenLu's personal npm package",
+  "main": "src/index.js",
+  "module": "src/index.mjs",
+  "exports": {
+    ".": {
+      "import": "./src/index.mjs",
+      "require": "./src/index.js"
+    }
+  },
+  "files": [
+    "src"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepublishOnly": "echo \"Publishing menlu...\""
+  },
+  "keywords": [
+    "date",
+    "format",
+    "formatter",
+    "console",
+    "log",
+    "table",
+    "list",
+    "uuid",
+    "base64",
+    "clipboard",
+    "cookie",
+    "utility",
+    "menlu"
+  ],
+  "author": "lu",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": ""
+  }
+}
