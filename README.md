@@ -4,7 +4,7 @@
 
 menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
-当前共 **14 个实用方法**，全部纯手写实现。
+当前共 **18 个实用方法**，全部纯手写实现。
 
 ## 安装
 
@@ -14,7 +14,7 @@ npm install menlu
 
 ## 使用方式
 
-> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 14 个方法，调用形式为 `ML.xxx()`。
+> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 18 个方法，调用形式为 `ML.xxx()`。
 >
 > 以下所有示例都以 `ML.xxx()` 写法为主；也支持按需具名导入（见文末）。
 
@@ -202,19 +202,23 @@ import ML, { formatDate } from "menlu";
 
 ## 方法总览
 
-| 方法                                       | 功能          | 适用场景                 |
-| ------------------------------------------ | ------------- | ------------------------ |
-| `formatDate`                               | 日期格式化    | 列表时间展示、日志时间戳 |
-| `log`                                      | 彩色日志输出  | 终端调试、构建脚本提示   |
-| `list`                                     | 列表/对象输出 | 终端查看数组、对象       |
-| `table`                                    | 表格输出      | 终端数据报表             |
-| `divider`                                  | 分隔线        | 终端输出美化             |
-| `box`                                      | 信息框        | 终端重点提示             |
-| `uuid`                                     | UUID v4 生成  | 前端生成唯一 ID          |
-| `numId`                                    | 纯数字随机 ID | 订单号、验证码、邀请码   |
-| `toBase64` / `fromBase64`                  | Base64 编解码 | 中文/图片 base64 转换    |
-| `copyText`                                 | 剪贴板复制    | 复制链接、邀请码（多端） |
-| `setCookie` / `getCookie` / `removeCookie` | Cookie 读写删 | 登录态、主题偏好         |
+| 方法                                       | 功能               | 适用场景                    |
+| ------------------------------------------ | ------------------ | --------------------------- |
+| `formatDate`                               | 日期格式化         | 列表时间展示、日志时间戳    |
+| `log`                                      | 彩色日志输出       | 终端调试、构建脚本提示      |
+| `list`                                     | 列表/对象输出      | 终端查看数组、对象          |
+| `table`                                    | 表格输出           | 终端数据报表                |
+| `divider`                                  | 分隔线             | 终端输出美化                |
+| `box`                                      | 信息框             | 终端重点提示                |
+| `uuid`                                     | UUID v4 生成       | 前端生成唯一 ID             |
+| `numId`                                    | 纯数字随机 ID      | 订单号、验证码、邀请码      |
+| `toBase64` / `fromBase64`                  | Base64 编解码      | 中文/图片 base64 转换       |
+| `copyText`                                 | 剪贴板复制         | 复制链接、邀请码（多端）    |
+| `setCookie` / `getCookie` / `removeCookie` | Cookie 读写删      | 登录态、主题偏好            |
+| `url`                                      | 获取完整 URL       | 页面地址、分享链接          |
+| `baseUrl`                                  | 获取不带参数的 URL | 页面基础地址                |
+| `urlParams`                                | 获取所有查询参数   | 解析 URL 参数               |
+| `urlParam`                                 | 获取指定参数       | 读取 URL 参数（支持默认值） |
 
 ---
 
@@ -609,6 +613,56 @@ ML.removeCookie("token");
 **环境说明：** 非浏览器环境（Node / 小程序）下：`setCookie` / `removeCookie` 返回 `false`，`getCookie` 返回 `null`，不会报错。
 
 > ⚠️ **安全提示：** 敏感 token 建议由后端设置 `HttpOnly` Cookie（脚本无法读取，防 XSS）；本工具设置的是普通 Cookie，脚本可读。
+
+---
+
+### 12. url / baseUrl / urlParams / urlParam —— URL 工具
+
+#### url —— 获取当前页面完整 URL
+
+```js
+ML.url();
+// => 'https://example.com/path?id=1&name=张三#section'
+```
+
+#### baseUrl —— 获取不带参数的 URL
+
+```js
+ML.baseUrl();
+// => 'https://example.com/path'（不含 ?id=1&name=张三#section）
+```
+
+#### urlParams —— 获取所有查询参数
+
+```js
+ML.urlParams();
+// 当前 URL: https://example.com?id=1&name=张三
+// => { id: '1', name: '张三' }
+```
+
+#### urlParam —— 获取指定参数
+
+**参数：**
+
+| 参数           | 类型     | 默认值 | 说明                 |
+| -------------- | -------- | ------ | -------------------- |
+| `name`         | `string` | -      | 参数名               |
+| `defaultValue` | `any`    | -      | 参数不存在时的默认值 |
+
+**返回值：** 参数值（如果默认值是 number，自动转换为 number）
+
+```js
+ML.urlParam("id");
+// => '1'
+
+ML.urlParam("age", 18);
+// => 18（不存在，返回默认值）
+
+ML.urlParam("count", 0);
+// => 25（存在 '25'，自动转 number）
+```
+
+**环境说明：** 非浏览器环境（Node）下：`url` / `baseUrl` 返回空字符串 `''`，`urlParams` 返回空对象 `{}`，`urlParam` 返回默认值。
 
 ---
 

@@ -230,7 +230,50 @@ export function getCookie(name: string): string | null;
 export function removeCookie(name: string, options?: CookieOptions): boolean;
 
 /**
- * menlu 工具库命名空间对象，包含全部 14 个方法，调用形式为 ML.xxx()。
+ * 获取当前页面完整 URL。
+ *
+ * @returns 完整 URL
+ * @example
+ * url(); // => 'https://example.com/path?id=1#section'
+ */
+export function url(): string;
+
+/**
+ * 获取当前页面 URL（不带查询参数）。
+ *
+ * @returns 不带参数的 URL（protocol + host + path）
+ * @example
+ * baseUrl(); // => 'https://example.com/path'
+ */
+export function baseUrl(): string;
+
+/**
+ * 获取当前页面 URL 的所有查询参数。
+ *
+ * @returns 参数键值对对象
+ * @example
+ * // 当前 URL: https://example.com?id=1&name=张三
+ * urlParams(); // => { id: '1', name: '张三' }
+ */
+export function urlParams(): Record<string, string>;
+
+/**
+ * 获取当前页面 URL 的指定查询参数。
+ *
+ * @param name 参数名
+ * @param defaultValue 参数不存在时的默认值（如果是 number，返回值自动转为 number）
+ * @returns 参数值或默认值
+ * @example
+ * // 当前 URL: https://example.com?id=1
+ * urlParam('id');        // => '1'
+ * urlParam('age', 18);   // => 18（不存在，返回默认值）
+ * urlParam('count', 0);  // => 25（存在 '25'，自动转 number）
+ */
+export function urlParam<T>(name: string, defaultValue: T): T;
+export function urlParam(name: string): string;
+
+/**
+ * menlu 工具库命名空间对象，包含全部 18 个方法，调用形式为 ML.xxx()。
  *
  * 使用方式：
  *   import ML from "menlu";
@@ -240,7 +283,7 @@ export function removeCookie(name: string, options?: CookieOptions): boolean;
  *   await ML.copyText("要复制的内容");        // 复制到剪贴板
  *
  * 方法列表：formatDate / log / list / table / divider / box / uuid / numId /
- * toBase64 / fromBase64 / copyText / setCookie / getCookie / removeCookie
+ * toBase64 / fromBase64 / copyText / setCookie / getCookie / removeCookie / url / baseUrl / urlParams / urlParam
  */
 declare const ML: {
   /** 日期格式化。参数：date（默认当前时间），pattern（默认 'YYYY-MM-DD'）。支持 YYYY MM DD HH mm ss 等占位符 */
@@ -271,6 +314,14 @@ declare const ML: {
   getCookie: typeof getCookie;
   /** 删除 Cookie，注意 path/domain 需与写入时一致 */
   removeCookie: typeof removeCookie;
+  /** 获取当前页面完整 URL */
+  url: typeof url;
+  /** 获取当前页面 URL（不带查询参数） */
+  baseUrl: typeof baseUrl;
+  /** 获取当前页面 URL 的所有查询参数 */
+  urlParams: typeof urlParams;
+  /** 获取当前页面 URL 的指定查询参数，支持默认值 */
+  urlParam: typeof urlParam;
 };
 
 type MLType = typeof ML;

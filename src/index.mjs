@@ -14,6 +14,7 @@ import { numId } from "./encode/numid.mjs";
 import { toBase64, fromBase64 } from "./encode/base64.mjs";
 import { copyText } from "./browser/copy.mjs";
 import { setCookie, getCookie, removeCookie } from "./browser/cookie.mjs";
+import { url, baseUrl, urlParams, urlParam } from "./browser/url.mjs";
 
 export {
   formatDate,
@@ -30,6 +31,10 @@ export {
   setCookie,
   getCookie,
   removeCookie,
+  url,
+  baseUrl,
+  urlParams,
+  urlParam,
 };
 
 export const ML = {
@@ -47,6 +52,10 @@ export const ML = {
   setCookie,
   getCookie,
   removeCookie,
+  url,
+  baseUrl,
+  urlParams,
+  urlParam,
 };
 
 export default ML;

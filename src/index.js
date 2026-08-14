@@ -14,6 +14,7 @@ const { numId } = require("./encode/numid");
 const { toBase64, fromBase64 } = require("./encode/base64");
 const { copyText } = require("./browser/copy");
 const { setCookie, getCookie, removeCookie } = require("./browser/cookie");
+const { url, baseUrl, urlParams, urlParam } = require("./browser/url");
 
 const ML = {
   formatDate,
@@ -30,6 +31,10 @@ const ML = {
   setCookie,
   getCookie,
   removeCookie,
+  url,
+  baseUrl,
+  urlParams,
+  urlParam,
 };
 
 module.exports = ML;
