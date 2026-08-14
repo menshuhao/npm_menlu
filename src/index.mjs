@@ -30,7 +30,7 @@ export {
   removeCookie,
 };
 
-export default {
+export const ML = {
   formatDate,
   log,
   list,
@@ -45,3 +45,5 @@ export default {
   getCookie,
   removeCookie,
 };
+
+export default ML;

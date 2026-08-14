@@ -35,7 +35,7 @@ export function setCookie(
 export function getCookie(name: string): string | null;
 export function removeCookie(name: string, options?: CookieOptions): boolean;
 
-declare const menlu: {
+declare const ML: {
   formatDate: typeof formatDate;
   log: typeof log;
   list: typeof list;
@@ -51,4 +51,13 @@ declare const menlu: {
   removeCookie: typeof removeCookie;
 };
 
-export default menlu;
+type MLType = typeof ML;
+
+// 全局变量声明：main.js/ts 挂载 (globalThis).ML 后，
+// 页面无需 import 即可直接使用 ML.xxx（配合包内全局类型）
+declare global {
+  var ML: MLType;
+}
+
+export { ML };
+export default ML;

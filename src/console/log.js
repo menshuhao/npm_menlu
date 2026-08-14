@@ -13,7 +13,21 @@ const ICONS = {
 };
 
 /**
+ * Whether the browser console (console.log with %c styles) is available.
+ * True in browsers (including devtools), false in Node / mini programs.
+ */
+function supportsBrowserConsole() {
+  return (
+    typeof window !== "undefined" &&
+    typeof window.console !== "undefined" &&
+    typeof window.console.log === "function"
+  );
+}
+
+/**
  * Print a colored log line with a level icon.
+ * Colors: ANSI in Node TTY, %c styles in browser console,
+ * plain text otherwise (NO_COLOR / redirected output / mini programs).
  *
  * @param {*} message - anything, will be stringified
  * @param {string} [type='info'] - 'info' | 'success' | 'warn' | 'error'
@@ -29,6 +43,9 @@ function log(message, type = "info") {
 
   if (paint("", rgb) !== "") {
     console.log(`${paint(icon, rgb, true)} ${paint(text, rgb)}`);
+  } else if (supportsBrowserConsole()) {
+    const style = `color: rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]});`;
+    console.log(`%c${icon} %c${text}`, `${style} font-weight: bold;`, style);
   } else {
     console.log(`${icon} ${text}`);
   }

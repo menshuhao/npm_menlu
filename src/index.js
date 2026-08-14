@@ -14,7 +14,7 @@ const { toBase64, fromBase64 } = require("./encode/base64");
 const { copyText } = require("./browser/copy");
 const { setCookie, getCookie, removeCookie } = require("./browser/cookie");
 
-module.exports = {
+const ML = {
   formatDate,
   log,
   list,
@@ -29,3 +29,6 @@ module.exports = {
   getCookie,
   removeCookie,
 };
+
+module.exports = ML;
+module.exports.ML = ML;
