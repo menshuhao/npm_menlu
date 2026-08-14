@@ -1,6 +1,6 @@
 {
   "name": "menlu",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "MenLu's personal npm package",
   "main": "src/index.js",
   "module": "src/index.mjs",
