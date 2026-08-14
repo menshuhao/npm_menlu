@@ -4,6 +4,7 @@
   "description": "MenLu's personal npm package",
   "main": "src/index.js",
   "module": "src/index.mjs",
+  "types": "src/index.d.ts",
   "exports": {
     ".": {
       "import": "./src/index.mjs",
