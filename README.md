@@ -10,50 +10,37 @@
 npm install menlu
 ```
 
-## 使用方式（两种，任选其一）
+## 使用方式
 
 > `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 13 个方法，调用形式为 `ML.xxx()`。
+>
+> 以下所有示例都以 `ML.xxx()` 写法为主；也支持按需具名导入（见文末）。
 
-### 方式一：页面引入（推荐，最标准）
+---
 
-**main.js 完全不用改**，哪个页面要用，就在哪个页面 `import ML`：
+### 一、Vue 3 项目
 
-```js
-// main.js / main.ts —— 保持原样，不用动
-```
+#### Vue 3 + JS
+
+**方式 A：页面引入（推荐，main.js 不用动）**
 
 ```vue
-<!-- 任意页面 -->
+<!-- 任意页面 Home.vue -->
 <script setup>
-import ML from "menlu"; // 页面里引入一次
+import ML from "menlu";
 
-const now = ML.formatDate(new Date(), "YYYY-MM-DD"); // ML.xxx 直接调用
+const now = ML.formatDate(new Date(), "YYYY-MM-DD");
 const id = ML.uuid();
 ML.log("页面加载", "success");
-await ML.copyText("复制成功");
-const token = ML.getCookie("token");
 </script>
 ```
 
-- ✅ 不用改 main.js/ts
-- ✅ 标准写法，代码可追溯，利于 tree-shaking
-- ✅ TS 项目自带类型提示，无需任何额外声明
-
-**Node 项目（CommonJS）：**
+**方式 B：全局挂载（main.js 加 2 行，页面零引入）**
 
 ```js
-const ML = require("menlu");
-ML.formatDate(new Date());
-```
-
-### 方式二：全局挂载（最省事）
-
-**main.js / main.ts 加 2 行**，之后所有页面直接用，连 import 都不用写：
-
-```js
-// main.js / main.ts
+// main.js
 import ML from "menlu";
-(globalThis as any).ML = ML;   // 挂到全局
+globalThis.ML = ML; // JS 项目直接挂
 ```
 
 ```vue
@@ -61,29 +48,15 @@ import ML from "menlu";
 <script setup>
 const now = ML.formatDate(new Date(), "YYYY-MM-DD");
 ML.log("页面加载", "success");
-const id = ML.uuid();
 </script>
 ```
 
-- ✅ 页面零代码接入（TS 项目也不用建声明文件，类型已内置在包中）
-- ⚠️ 全局变量形式，项目里看不出方法来源，建议团队内统一约定
-
-### 方式三：按需具名导入（打包体积最优化）
+**方式 C：模板中使用（配合方式 B）**
 
 ```js
-import { formatDate, uuid } from "menlu";
-// 或
-import ML, { formatDate } from "menlu";
-```
-
-### 补充：Vue 模板中直接使用
-
-配合方式二，模板里用 `$menlu` 直接访问：
-
-```js
-// main.js / main.ts
+// main.js
 import ML from "menlu";
-(globalThis as any).ML = ML;
+globalThis.ML = ML;
 app.config.globalProperties.$menlu = ML;
 ```
 
@@ -103,6 +76,127 @@ export default {
 };
 </script>
 ```
+
+#### Vue 3 + TS
+
+**和 JS 唯一区别**：全局挂载时写 `as any`（TS 语法要求），页面使用完全一样，且自带类型提示。
+
+```ts
+// main.ts
+import ML from "menlu";
+(globalThis as any).ML = ML; // TS 项目加 as any，无需任何其他声明（类型已内置在包中）
+```
+
+```vue
+<!-- 任意页面：直接用，鼠标悬停有参数说明 -->
+<script setup lang="ts">
+const now: string = ML.formatDate(new Date(), "YYYY-MM-DD");
+const id: string = ML.uuid();
+const ok: Promise<boolean> = ML.copyText("要复制的内容");
+</script>
+```
+
+> 也可以不用全局挂载，每个页面 `import ML from "menlu"` 即可（和 JS 写法一致）。
+
+---
+
+### 二、React 项目
+
+React 没有 `$menlu` 这类的模板挂载机制，用法只有两种：**组件里引入** 或 **挂 window 全局**。
+
+#### React + JS
+
+**方式 A：组件内引入（推荐）**
+
+```jsx
+// src/App.jsx
+import ML from "menlu";
+
+function App() {
+  const now = ML.formatDate(new Date(), "YYYY-MM-DD");
+  const id = ML.uuid();
+
+  return (
+    <div>
+      <p>当前时间：{now}</p>
+      <p>UUID：{id}</p>
+    </div>
+  );
+}
+```
+
+**方式 B：挂 window 全局（入口文件加 1 行）**
+
+```js
+// src/main.jsx / index.js
+import ML from "menlu";
+window.ML = ML; // JS 项目直接挂
+```
+
+```jsx
+// 任意组件：不用 import，直接用
+const token = ML.getCookie("token");
+```
+
+#### React + TS
+
+```tsx
+// src/App.tsx
+import ML from "menlu";
+
+function App() {
+  const now: string = ML.formatDate(new Date(), "YYYY-MM-DD");
+  const id: string = ML.uuid();
+  const ok: Promise<boolean> = ML.copyText("复制");
+
+  return (
+    <div>
+      <p>当前时间：{now}</p>
+      <p>UUID：{id}</p>
+    </div>
+  );
+}
+```
+
+**挂 window 全局（TS 项目加 as any）：**
+
+```ts
+// src/main.tsx
+import ML from "menlu";
+(window as any).ML = ML; // 类型已内置在包中，页面直接用 ML.xxx 有提示
+```
+
+---
+
+### 三、Node 项目（CommonJS）
+
+```js
+const ML = require("menlu");
+
+ML.formatDate(new Date());
+ML.log("构建完成", "success");
+```
+
+### 四、按需具名导入（打包体积最优化）
+
+```js
+import { formatDate, uuid, getCookie } from "menlu";
+// 或混合使用
+import ML, { formatDate } from "menlu";
+```
+
+---
+
+### 四类项目对比速查
+
+| 项目  | 语言 | 页面引入（推荐）                    | 全局挂载                             |
+| ----- | ---- | ----------------------------------- | ------------------------------------ |
+| Vue 3 | JS   | `import ML from "menlu"` → `ML.xxx` | main.js 2 行，页面零引入             |
+| Vue 3 | TS   | 同上（自带类型提示）                | main.ts 2 行（`as any`），页面零引入 |
+| React | JS   | 组件里 `import` → `ML.xxx`          | main.jsx 1 行 `window.ML = ML`       |
+| React | TS   | 同上（自带类型提示）                | main.tsx 1 行（`as any`）            |
+
+> 提醒：全局挂载（方式 B）适合团队统一约定；日常开发推荐页面引入，代码可追溯、利于 tree-shaking。
 
 ## 方法总览
 
