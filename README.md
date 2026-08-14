@@ -1,6 +1,6 @@
 # menlu
 
-门术豪（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
+menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
 当前共 **13 个实用方法**，全部纯手写实现。
 
@@ -574,4 +574,4 @@ removeCookie("token");
 
 ## License
 
-MIT © 门术豪
+MIT © menshuhao
