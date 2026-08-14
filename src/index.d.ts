@@ -136,6 +136,18 @@ export function box(text: string, type?: LogType): void;
 export function uuid(): string;
 
 /**
+ * 生成纯数字随机 ID（密码学安全，首位不会为 0）。
+ *
+ * @param length 位数（默认 10，范围 1-100）
+ * @returns 纯数字字符串
+ * @example
+ * numId();      // => "4839201745"（10 位）
+ * numId(6);     // => "483920"（6 位，验证码场景）
+ * numId(4);     // => "4839"
+ */
+export function numId(length?: number): string;
+
+/**
  * Base64 编码（Unicode 安全，中文/emoji/特殊符号均可）。
  *
  * @param text 要编码的文本
@@ -218,7 +230,7 @@ export function getCookie(name: string): string | null;
 export function removeCookie(name: string, options?: CookieOptions): boolean;
 
 /**
- * menlu 工具库命名空间对象，包含全部 13 个方法，调用形式为 ML.xxx()。
+ * menlu 工具库命名空间对象，包含全部 14 个方法，调用形式为 ML.xxx()。
  *
  * 使用方式：
  *   import ML from "menlu";
@@ -227,7 +239,7 @@ export function removeCookie(name: string, options?: CookieOptions): boolean;
  *   ML.uuid();                               // 生成 UUID v4
  *   await ML.copyText("要复制的内容");        // 复制到剪贴板
  *
- * 方法列表：formatDate / log / list / table / divider / box / uuid /
+ * 方法列表：formatDate / log / list / table / divider / box / uuid / numId /
  * toBase64 / fromBase64 / copyText / setCookie / getCookie / removeCookie
  */
 declare const ML: {
@@ -245,6 +257,8 @@ declare const ML: {
   box: typeof box;
   /** 生成 UUID v4 字符串，自动降级兼容旧环境 */
   uuid: typeof uuid;
+  /** 生成纯数字随机 ID（默认 10 位，可指定位数），首位不会为 0 */
+  numId: typeof numId;
   /** Base64 编码，Unicode 安全（中文/emoji 可用） */
   toBase64: typeof toBase64;
   /** Base64 解码，Unicode 安全 */

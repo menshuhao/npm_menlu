@@ -10,6 +10,7 @@ import { table } from "./console/table.mjs";
 import { divider } from "./console/divider.mjs";
 import { box } from "./console/box.mjs";
 import { uuid } from "./encode/uuid.mjs";
+import { numId } from "./encode/numid.mjs";
 import { toBase64, fromBase64 } from "./encode/base64.mjs";
 import { copyText } from "./browser/copy.mjs";
 import { setCookie, getCookie, removeCookie } from "./browser/cookie.mjs";
@@ -22,6 +23,7 @@ export {
   divider,
   box,
   uuid,
+  numId,
   toBase64,
   fromBase64,
   copyText,
@@ -38,6 +40,7 @@ export const ML = {
   divider,
   box,
   uuid,
+  numId,
   toBase64,
   fromBase64,
   copyText,

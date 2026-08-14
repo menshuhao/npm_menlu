@@ -4,7 +4,7 @@
 
 menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
-当前共 **13 个实用方法**，全部纯手写实现。
+当前共 **14 个实用方法**，全部纯手写实现。
 
 ## 安装
 
@@ -14,7 +14,7 @@ npm install menlu
 
 ## 使用方式
 
-> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 13 个方法，调用形式为 `ML.xxx()`。
+> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 14 个方法，调用形式为 `ML.xxx()`。
 >
 > 以下所有示例都以 `ML.xxx()` 写法为主；也支持按需具名导入（见文末）。
 
@@ -211,6 +211,7 @@ import ML, { formatDate } from "menlu";
 | `divider`                                  | 分隔线        | 终端输出美化             |
 | `box`                                      | 信息框        | 终端重点提示             |
 | `uuid`                                     | UUID v4 生成  | 前端生成唯一 ID          |
+| `numId`                                    | 纯数字随机 ID | 订单号、验证码、邀请码   |
 | `toBase64` / `fromBase64`                  | Base64 编解码 | 中文/图片 base64 转换    |
 | `copyText`                                 | 剪贴板复制    | 复制链接、邀请码（多端） |
 | `setCookie` / `getCookie` / `removeCookie` | Cookie 读写删 | 登录态、主题偏好         |
@@ -425,7 +426,39 @@ const id = "order_" + ML.uuid();
 
 ---
 
-### 8. toBase64 / fromBase64 —— Base64 编解码
+### 8. numId —— 纯数字随机 ID
+
+**参数：**
+
+| 参数     | 类型     | 默认值 | 说明               |
+| -------- | -------- | ------ | ------------------ |
+| `length` | `number` | `10`   | 位数（范围 1-100） |
+
+**返回值：** `string` 纯数字字符串（首位不会为 0，密码学安全）
+
+**使用示例：**
+
+```js
+import ML from "menlu";
+
+ML.numId();
+// => "4839201745"（默认 10 位）
+
+ML.numId(6);
+// => "483920"（6 位：短信验证码场景）
+
+ML.numId(4);
+// => "4839"（4 位：支付验证码场景）
+
+// 常见用法：订单号、邀请码
+const orderNo = "ML" + ML.numId(16);
+```
+
+**实现说明：** 使用加密安全随机数（`crypto.getRandomValues`），100 次 8 位生成互不重复，适合订单号 / 验证码 / 邀请码。
+
+---
+
+### 9. toBase64 / fromBase64 —— Base64 编解码
 
 **参数：** `text`：`string`（要编码的文本）；`base64`：`string`（要解码的 base64）
 
@@ -453,7 +486,7 @@ const imgBase64 = "data:image/png;base64," + ML.toBase64(rawData);
 
 ---
 
-### 9. copyText —— 复制到剪贴板（多端适配）
+### 10. copyText —— 复制到剪贴板（多端适配）
 
 **参数：** `text`：`string`（要复制的内容）
 
@@ -489,7 +522,7 @@ async function onCopy() {
 
 ---
 
-### 10. setCookie / getCookie / removeCookie —— Cookie 工具
+### 11. setCookie / getCookie / removeCookie —— Cookie 工具
 
 #### setCookie —— 写入 Cookie
 

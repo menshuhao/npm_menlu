@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>menlu - menshuhao 的个人工具库文档</title>
-  <meta name="description" content="menlu npm 工具库在线文档：13 个零依赖实用方法（日期格式化 / 彩色日志 / UUID / Base64 / 剪贴板 / Cookie）" />
+  <meta name="description" content="menlu npm 工具库在线文档：14 个零依赖实用方法（日期格式化 / 彩色日志 / UUID / Base64 / 剪贴板 / Cookie）" />
   <style>
     :root {
       --accent: #2563eb;
@@ -199,7 +199,7 @@
 
 <div class="hero">
   <h1><span>menlu</span> · 开箱即用的个人工具库</h1>
-  <p>零依赖、纯手写，13 个实用方法。支持 JS / TS / Node / 浏览器 / 小程序，一行引入，随处可用。</p>
+  <p>零依赖、纯手写，14 个实用方法。支持 JS / TS / Node / 浏览器 / 小程序，一行引入，随处可用。</p>
   <div class="install"><span class="dollar">$</span> npm install menlu</div>
 </div>
 
@@ -217,6 +217,7 @@
       <a href="#box">box 信息框</a>
       <div class="side-title" style="margin-top: 12px;">🔐 编码与 ID</div>
       <a href="#uuid">uuid 唯一ID</a>
+      <a href="#numId">numId 数字ID</a>
       <a href="#base64">toBase64 / fromBase64</a>
       <div class="side-title" style="margin-top: 12px;">🌐 浏览器工具</div>
       <a href="#copyText">copyText 复制</a>
@@ -266,7 +267,7 @@ ML.<span class="f">formatDate</span>(<span class="k">new</span> <span class="f">
 
     <!-- 方法文档 -->
     <section id="methods">
-      <h2 class="section-title"><span class="tag">③</span>方法文档（共 13 个）</h2>
+      <h2 class="section-title"><span class="tag">③</span>方法文档（共 14 个）</h2>
 
       <!-- 分组：日期时间 -->
       <h3 class="group-title">🕐 日期时间 <span class="count">1 个</span></h3>
@@ -382,7 +383,7 @@ ML.<span class="f">box</span>(<span class="s">"第一行\n第二行"</span>, <sp
       </div>
 
       <!-- 分组：编码与 ID -->
-      <h3 class="group-title">🔐 编码与 ID <span class="count">2 个</span></h3>
+      <h3 class="group-title">🔐 编码与 ID <span class="count">3 个</span></h3>
 
       <!-- uuid -->
       <div class="method" id="uuid">
@@ -394,6 +395,24 @@ ML.<span class="f">box</span>(<span class="s">"第一行\n第二行"</span>, <sp
 
 <span class="c">// 常见用法：列表 key、订单号前缀</span>
 <span class="k">const</span> orderNo = <span class="s">"order_"</span> + ML.<span class="f">uuid</span>();</code></pre>
+      </div>
+
+      <!-- numId -->
+      <div class="method" id="numId">
+        <h3><code>ML.numId(length?)</code> —— 纯数字随机 ID</h3>
+        <p class="desc">密码学安全随机数，首位不会为 0。适合订单号、短信验证码、邀请码。</p>
+        <h4>参数</h4>
+        <table>
+          <tr><th>参数</th><th>类型</th><th>默认</th><th>说明</th></tr>
+          <tr><td><code>length</code></td><td><code>number</code></td><td><code>10</code></td><td>位数（范围 1-100）</td></tr>
+        </table>
+        <h4>示例</h4>
+        <pre><code>ML.<span class="f">numId</span>();       <span class="c">// =&gt; "4839201745"（默认 10 位）</span>
+ML.<span class="f">numId</span>(<span class="n">6</span>);      <span class="c">// =&gt; "483920"（6 位：短信验证码）</span>
+ML.<span class="f">numId</span>(<span class="n">4</span>);      <span class="c">// =&gt; "4839"（4 位：支付验证码）</span>
+
+<span class="c">// 常见用法：订单号、邀请码</span>
+<span class="k">const</span> orderNo = <span class="s">"ML"</span> + ML.<span class="f">numId</span>(<span class="n">16</span>);</code></pre>
       </div>
 
       <!-- base64 -->
@@ -482,7 +501,7 @@ ML.<span class="f">removeCookie</span>(<span class="s">"token"</span>);</code></
         <div class="note">⚠️ 删除 Cookie 时 path / domain 需与写入时一致，否则删不掉。敏感 token 建议后端设置 HttpOnly Cookie 防 XSS。</div>
       </div>
 
-      <div class="ok">✅ 以上就是全部 13 个方法。有任何问题欢迎到 <a href="https://github.com/menshuhao/npm_menlu" target="_blank">GitHub</a> 提 Issue。</div>
+      <div class="ok">✅ 以上就是全部 14 个方法。有任何问题欢迎到 <a href="https://github.com/menshuhao/npm_menlu" target="_blank">GitHub</a> 提 Issue。</div>
     </section>
   </main>
 </div>
