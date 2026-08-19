@@ -15,6 +15,7 @@ import { toBase64, fromBase64 } from "./encode/base64.mjs";
 import { copyText } from "./browser/copy.mjs";
 import { setCookie, getCookie, removeCookie } from "./browser/cookie.mjs";
 import { url, baseUrl, urlParams, urlParam } from "./browser/url.mjs";
+import { mask, maskString } from "./mask/mask.mjs";
 
 export {
   formatDate,
@@ -35,6 +36,8 @@ export {
   baseUrl,
   urlParams,
   urlParam,
+  mask,
+  maskString,
 };
 
 export const ML = {
@@ -56,6 +59,8 @@ export const ML = {
   baseUrl,
   urlParams,
   urlParam,
+  mask,
+  maskString,
 };
 
 export default ML;

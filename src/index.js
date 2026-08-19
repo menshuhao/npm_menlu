@@ -15,6 +15,7 @@ const { toBase64, fromBase64 } = require("./encode/base64");
 const { copyText } = require("./browser/copy");
 const { setCookie, getCookie, removeCookie } = require("./browser/cookie");
 const { url, baseUrl, urlParams, urlParam } = require("./browser/url");
+const { mask, maskString } = require("./mask/mask");
 
 const ML = {
   formatDate,
@@ -35,6 +36,8 @@ const ML = {
   baseUrl,
   urlParams,
   urlParam,
+  mask,
+  maskString,
 };
 
 module.exports = ML;

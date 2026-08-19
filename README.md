@@ -6,7 +6,7 @@
 
 menshuhao（MenLu）的个人 npm 工具库 —— 零依赖、开箱即用，支持 **JS / TS / Node / 浏览器 / 小程序**。
 
-当前共 **18 个实用方法**，全部纯手写实现。
+当前共 **20 个实用方法**，全部纯手写实现。
 
 ## 安装
 
@@ -16,7 +16,7 @@ npm install menlu
 
 ## 使用方式
 
-> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 18 个方法，调用形式为 `ML.xxx()`。
+> `ML` = **M**en**L**u，本工具库的命名空间对象，包含全部 20 个方法，调用形式为 `ML.xxx()`。
 >
 > 以下所有示例都以 `ML.xxx()` 写法为主；也支持按需具名导入（见文末）。
 
@@ -204,23 +204,49 @@ import ML, { formatDate } from "menlu";
 
 ## 方法总览
 
+### 🕐 日期时间
+
+| 方法         | 功能       | 适用场景                 |
+| ------------ | ---------- | ------------------------ |
+| `formatDate` | 日期格式化 | 列表时间展示、日志时间戳 |
+
+### ️ 控制台打印
+
+> ️ 以下 5 个方法均为**控制台打印工具**，输出到终端或浏览器 DevTools，**非页面 UI 组件**。适用场景：Node 脚本调试、浏览器 `console` 美化。
+
+| 方法      | 功能          | 适用场景               |
+| --------- | ------------- | ---------------------- |
+| `log`     | 彩色日志输出  | 调试信息、构建脚本提示 |
+| `list`    | 列表/对象输出 | 终端查看数组、对象     |
+| `table`   | 终端表格输出  | 终端数据报表           |
+| `divider` | 分隔线        | 终端输出美化           |
+| `box`     | 信息框        | 终端重点提示           |
+
+### 🔐 编码与 ID
+
+| 方法                      | 功能          | 适用场景               |
+| ------------------------- | ------------- | ---------------------- |
+| `uuid`                    | UUID v4 生成  | 前端生成唯一 ID        |
+| `numId`                   | 纯数字随机 ID | 订单号、验证码、邀请码 |
+| `toBase64` / `fromBase64` | Base64 编解码 | 中文/图片 base64 转换  |
+
+### 🌐 浏览器工具
+
 | 方法                                       | 功能               | 适用场景                    |
 | ------------------------------------------ | ------------------ | --------------------------- |
-| `formatDate`                               | 日期格式化         | 列表时间展示、日志时间戳    |
-| `log`                                      | 彩色日志输出       | 终端调试、构建脚本提示      |
-| `list`                                     | 列表/对象输出      | 终端查看数组、对象          |
-| `table`                                    | 表格输出           | 终端数据报表                |
-| `divider`                                  | 分隔线             | 终端输出美化                |
-| `box`                                      | 信息框             | 终端重点提示                |
-| `uuid`                                     | UUID v4 生成       | 前端生成唯一 ID             |
-| `numId`                                    | 纯数字随机 ID      | 订单号、验证码、邀请码      |
-| `toBase64` / `fromBase64`                  | Base64 编解码      | 中文/图片 base64 转换       |
 | `copyText`                                 | 剪贴板复制         | 复制链接、邀请码（多端）    |
 | `setCookie` / `getCookie` / `removeCookie` | Cookie 读写删      | 登录态、主题偏好            |
 | `url`                                      | 获取完整 URL       | 页面地址、分享链接          |
 | `baseUrl`                                  | 获取不带参数的 URL | 页面基础地址                |
 | `urlParams`                                | 获取所有查询参数   | 解析 URL 参数               |
 | `urlParam`                                 | 获取指定参数       | 读取 URL 参数（支持默认值） |
+
+### 通用工具
+
+| 方法         | 功能       | 适用场景                       |
+| ------------ | ---------- | ------------------------------ |
+| `mask`       | 数据脱敏   | 手机号、身份证、邮箱等敏感信息 |
+| `maskString` | 纯函数脱敏 | 不依赖 Vue 的脱敏              |
 
 ---
 
@@ -665,6 +691,98 @@ ML.urlParam("count", 0);
 ```
 
 **环境说明：** 非浏览器环境（Node）下：`url` / `baseUrl` 返回空字符串 `''`，`urlParams` 返回空对象 `{}`，`urlParam` 返回默认值。
+
+---
+
+### 13. ML.mask / ML.maskString —— 数据脱敏（通用工具）
+
+**参数：**
+
+| 参数        | 类型                    | 默认值 | 说明                                |
+| ----------- | ----------------------- | ------ | ----------------------------------- |
+| `source`    | `string \| Ref<string>` | -      | 原始值（字符串或 Vue ref/computed） |
+| `prefixLen` | `number`                | `3`    | 保留前缀位数                        |
+| `suffixLen` | `number`                | `4`    | 保留后缀位数                        |
+| `maskChar`  | `string`                | `'*'`  | 掩码字符                            |
+
+**返回值：**
+
+- `ML.mask`：传入字符串返回字符串，传入 Vue ref 返回 computed
+- `ML.maskString`：始终返回字符串（纯函数，不依赖 Vue）
+
+**使用示例：**
+
+```js
+import ML from "menlu";
+
+ML.mask("13812345678", { prefixLen: 3, suffixLen: 4 });
+// => "138****5678"
+
+// 自定义掩码字符
+ML.mask("13812345678", { prefixLen: 3, suffixLen: 4, maskChar: "#" });
+// => "138####5678"
+
+ML.maskString("110101199001011234", 6, 4);
+// => "110101********1234"
+
+ML.maskString("13812345678", 3, 4, "#");
+// => "138####5678"
+```
+
+```vue
+<!-- Vue 3 -->
+<script setup>
+import { ref } from "vue";
+import ML from "menlu";
+
+const phone = ref("13812345678");
+const maskedPhone = ML.mask(phone, { prefixLen: 3, suffixLen: 4 });
+// => computed { value: "138****5678" }
+</script>
+
+<template>
+  <div>手机号：{{ maskedPhone }}</div>
+</template>
+```
+
+```jsx
+// React
+import { useMemo, useState } from "react";
+import ML from "menlu";
+
+function Component() {
+  const [phone] = useState("13812345678");
+  const [idCard] = useState("110101199001011234");
+
+  // 默认参数
+  const maskedPhone = useMemo(() => ML.mask(phone), [phone]);
+  // => '138****5678'
+
+  // 自定义参数
+  const maskedId = useMemo(
+    () => ML.mask(idCard, { prefixLen: 6, suffixLen: 4 }),
+    [idCard],
+  );
+  // => '110101********1234'
+
+  // 自定义掩码字符
+  const maskedCustom = useMemo(
+    () => ML.mask(phone, { prefixLen: 3, suffixLen: 4, maskChar: "#" }),
+    [phone],
+  );
+  // => '138####5678'
+
+  return (
+    <div>
+      <div>手机号：{maskedPhone}</div>
+      <div>身份证：{maskedId}</div>
+      <div>自定义：{maskedCustom}</div>
+    </div>
+  );
+}
+```
+
+**注意：** `ML.mask` 在 Vue 环境下自动返回 computed，其他环境返回字符串。`ML.maskString` 始终返回字符串。
 
 ---
 

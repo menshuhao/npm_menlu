@@ -178,7 +178,7 @@ export function fromBase64(base64: string): string;
  * @returns Promise<boolean>，是否复制成功（纯 Node 无可用环境返回 false）
  * @example
  * const ok = await copyText("要复制的内容");
- * if (ok) log("已复制", "success");
+ * if (ok) log.success("已复制");
  */
 export function copyText(text: string): Promise<boolean>;
 
@@ -273,17 +273,62 @@ export function urlParam<T>(name: string, defaultValue: T): T;
 export function urlParam(name: string): string;
 
 /**
- * menlu 工具库命名空间对象，包含全部 18 个方法，调用形式为 ML.xxx()。
+ * 通用数据脱敏工具（支持 Vue 3 / React / uni-app / 原生 JS）。
+ *
+ * - 传入字符串：直接返回脱敏后的字符串
+ * - 传入 Vue ref/computed：返回 computed（自动响应式）
+ * - React：配合 useMemo 使用
+ *
+ * @param source 原始值（字符串或 Vue ref/computed）
+ * @param options 配置项
+ * @param options.prefixLen 保留前缀位数（默认 3）
+ * @param options.suffixLen 保留后缀位数（默认 4）
+ * @param options.maskChar 掩码字符（默认 '*'）
+ * @returns 脱敏后的值（Vue 环境返回 computed）
+ * @example
+ * // 原生 JS
+ * mask("13812345678", { prefixLen: 3, suffixLen: 4 })
+ * // => "138****5678"
+ *
+ * // Vue 3
+ * const phone = ref("13812345678")
+ * const masked = mask(phone, { prefixLen: 3, suffixLen: 4 })
+ * // => computed { value: "138****5678" }
+ *
+ * // React
+ * const masked = useMemo(() => mask(phone), [phone])
+ */
+export function mask(
+  source: string | { value: string },
+  options?: {
+    prefixLen?: number;
+    suffixLen?: number;
+    maskChar?: string;
+  },
+): string | { value: string };
+
+/**
+ * 纯函数版数据脱敏（不依赖 Vue，始终返回字符串）。
+ */
+export function maskString(
+  str: string,
+  prefixLen?: number,
+  suffixLen?: number,
+  maskChar?: string,
+): string;
+
+/**
+ * menlu 工具库命名空间对象，包含全部 20 个方法，调用形式为 ML.xxx()。
  *
  * 使用方式：
  *   import ML from "menlu";
  *   ML.formatDate(new Date(), "YYYY-MM-DD"); // 日期格式化
- *   ML.log("构建完成", "success");           // 彩色日志输出
+ *   ML.log.success("构建完成");              // 彩色日志输出
  *   ML.uuid();                               // 生成 UUID v4
  *   await ML.copyText("要复制的内容");        // 复制到剪贴板
  *
  * 方法列表：formatDate / log / list / table / divider / box / uuid / numId /
- * toBase64 / fromBase64 / copyText / setCookie / getCookie / removeCookie / url / baseUrl / urlParams / urlParam
+ * toBase64 / fromBase64 / copyText / setCookie / getCookie / removeCookie / url / baseUrl / urlParams / urlParam / mask / maskString
  */
 declare const ML: {
   /** 日期格式化。参数：date（默认当前时间），pattern（默认 'YYYY-MM-DD'）。支持 YYYY MM DD HH mm ss 等占位符 */
@@ -322,6 +367,10 @@ declare const ML: {
   urlParams: typeof urlParams;
   /** 获取当前页面 URL 的指定查询参数，支持默认值 */
   urlParam: typeof urlParam;
+  /** 通用数据脱敏（支持 Vue 3 / React / uni-app / 原生 JS） */
+  mask: typeof mask;
+  /** 纯函数版数据脱敏（不依赖 Vue，始终返回字符串） */
+  maskString: typeof maskString;
 };
 
 type MLType = typeof ML;
